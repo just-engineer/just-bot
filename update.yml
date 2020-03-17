@@ -1,0 +1,7 @@
+name: just-bot
+channels:
+  - defaults
+dependencies:
+  - pip
+  - pip:
+    - burnysc2
