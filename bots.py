@@ -18,7 +18,9 @@ class DroneBuilder(sc2.BotAI):
         for loop_larva in self.larva:
 
             # at first, check, need we build overlords
-            if self.supply_left <= self.supply_left_to_overlord:  # few supply, build overlord for the future
+            in_production = self.already_pending(UnitTypeId.OVERLORD) > 0
+            need_more = self.supply_left <= self.supply_left_to_overlord
+            if need_more and not in_production:  # few supply, build overlord for the future
                 if self.can_afford(UnitTypeId.OVERLORD):
                     self.do(loop_larva.train(UnitTypeId.OVERLORD), subtract_cost=True, subtract_supply=True)
                 else:  # can't train overlord on this step
@@ -29,9 +31,6 @@ class DroneBuilder(sc2.BotAI):
                 self.do(loop_larva.train(UnitTypeId.DRONE), subtract_cost=True, subtract_supply=True)
             else:  # can't train drons on this step
                 break
-
-        # TODO use this information in code, that check we need build overlords (line 21)
-        print(self.already_pending(UnitTypeId.OVERLORD))
 
 # class ZerglingRush(sc2.BotAI):
 #     async def on_step(self, iteration: int):
